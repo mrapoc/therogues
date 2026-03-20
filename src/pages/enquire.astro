@@ -1,0 +1,167 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/global.css';
+import pricing from '../data/pricing.json';
+---
+
+<Base title="Enquire | The Rogues" description="Get in touch to book The Rogues for your event. Tell us about your occasion and we'll put together a quote.">
+  <section class="page-header">
+    <div class="container">
+      <h1 class="section-title">Book <span class="accent">The Rogues</span></h1>
+      <p class="section-subtitle" style="margin: 0 auto;">Tell us about your event and we'll get back to you with a quote.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width: 800px;">
+      <form name="enquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="enquiry-form">
+        <!-- Honeypot -->
+        <p style="display: none;">
+          <label>Don't fill this out: <input name="bot-field" /></label>
+        </p>
+
+        <!-- Contact Details -->
+        <h2 class="section-title" style="font-size: 1.4rem; margin-bottom: 1.5rem;">Your <span class="accent">Details</span></h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Your Name *</label>
+            <input type="text" id="name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" />
+          </div>
+          <div class="form-group">
+            <label for="date">Event Date *</label>
+            <input type="date" id="date" name="date" required />
+          </div>
+        </div>
+
+        <!-- Event Details -->
+        <h2 class="section-title" style="font-size: 1.4rem; margin: 2.5rem 0 1.5rem;">Event <span class="accent">Details</span></h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="event-type">Type of Event *</label>
+            <select id="event-type" name="event-type" required>
+              <option value="">Select...</option>
+              <option value="wedding">Wedding</option>
+              <option value="pub">Pub / Bar</option>
+              <option value="private-party">Private Party</option>
+              <option value="birthday">Birthday / Anniversary</option>
+              <option value="corporate">Corporate Event</option>
+              <option value="festival">Festival / Outdoor</option>
+              <option value="christmas">Christmas / NYE Party</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="band-config">Band Setup *</label>
+            <select id="band-config" name="band-config" required>
+              <option value="">Select...</option>
+              <option value="full-band">Full Band</option>
+              <option value="acoustic-duo">Acoustic Duo</option>
+              <option value="acoustic-trio">Acoustic Trio</option>
+              <option value="not-sure">Not Sure — Advise Me</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="venue">Venue Name / Location</label>
+            <input type="text" id="venue" name="venue" placeholder="e.g. The Crown, Ludlow" />
+          </div>
+          <div class="form-group">
+            <label for="guests">Approx. Number of Guests</label>
+            <select id="guests" name="guests">
+              <option value="">Select...</option>
+              <option value="under-50">Under 50</option>
+              <option value="50-100">50 - 100</option>
+              <option value="100-200">100 - 200</option>
+              <option value="200+">200+</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Song Picks -->
+        <h2 class="section-title" style="font-size: 1.4rem; margin: 2.5rem 0 1.5rem;">Song <span class="accent">Picks</span></h2>
+        <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">
+          Picked songs from our <a href="/setlist">set list</a>? Paste them here, or tell us what kind of music you're after.
+        </p>
+
+        <div class="form-group">
+          <label for="songs">Requested Songs</label>
+          <textarea id="songs" name="songs" placeholder="e.g. Back in Black - AC/DC&#10;Sweet Child O' Mine - Guns N' Roses&#10;Mr Brightside - The Killers" rows="5"></textarea>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="form-group">
+          <label for="message">Anything Else?</label>
+          <textarea id="message" name="message" placeholder="Special requirements, timings, questions — anything you'd like us to know." rows="4"></textarea>
+        </div>
+
+        <!-- Pricing Indicator -->
+        <div id="price-indicator" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem;">
+          <h3 style="font-family: var(--font-heading); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; font-size: 1rem;">
+            Indicative Price
+          </h3>
+          <p id="price-display" style="color: var(--accent-light); font-family: var(--font-heading); font-size: 1.8rem;">
+            Select a band setup above
+          </p>
+          <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">
+            Final price depends on date, location, and requirements. We'll confirm in our quote.
+          </p>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem;">Send Enquiry</button>
+      </form>
+
+      <!-- Success message (shown after Netlify form submit) -->
+      <div id="form-success" style="display: none; text-align: center; padding: 3rem 0;">
+        <h2 class="section-title">Enquiry <span class="accent">Sent</span>!</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">
+          Thanks for getting in touch. We'll get back to you as soon as possible — usually within 24 hours.
+        </p>
+        <a href="/" class="btn btn-outline">Back to Home</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Pre-fill songs from setlist page wishlist
+    const params = new URLSearchParams(window.location.search);
+    const songsParam = params.get('songs');
+    if (songsParam) {
+      const songsField = document.getElementById('songs') as HTMLTextAreaElement;
+      if (songsField) {
+        songsField.value = decodeURIComponent(songsParam);
+      }
+    }
+
+    // Pricing indicator
+    const bandConfig = document.getElementById('band-config') as HTMLSelectElement;
+    const priceDisplay = document.getElementById('price-display');
+
+    const priceGuides: Record<string, string> = {
+      'full-band': 'From £XXX',
+      'acoustic-duo': 'From £XXX',
+      'acoustic-trio': 'From £XXX',
+      'not-sure': 'We\'ll advise based on your event'
+    };
+
+    bandConfig?.addEventListener('change', () => {
+      if (priceDisplay) {
+        priceDisplay.textContent = priceGuides[bandConfig.value] || 'Select a band setup above';
+      }
+    });
+  </script>
+</Base>

@@ -1,0 +1,52 @@
+{
+  "packages": [
+    {
+      "name": "Acoustic Duo",
+      "price": "From £XXX",
+      "note": "Perfect for intimate settings",
+      "features": [
+        "2 musicians — vocals & guitar",
+        "Up to 2 sets (2 hours of music)",
+        "Ideal for pubs, restaurants & small venues",
+        "Chilled vibes, singalong classics",
+        "PA system included",
+        "Custom setlist from our acoustic repertoire"
+      ],
+      "featured": false
+    },
+    {
+      "name": "Full Band",
+      "price": "From £XXX",
+      "note": "The full Rogues experience",
+      "features": [
+        "Full band lineup",
+        "Up to 3 sets (3 hours of music)",
+        "Full PA & lighting rig",
+        "Face-melting guitar solos guaranteed",
+        "Mix of classic & modern rock",
+        "Custom setlist — you pick the songs"
+      ],
+      "featured": true
+    },
+    {
+      "name": "Acoustic Trio",
+      "price": "From £XXX",
+      "note": "The best of both worlds",
+      "features": [
+        "3 musicians — fuller acoustic sound",
+        "Up to 2 sets (2 hours of music)",
+        "Suits weddings, parties & mid-size venues",
+        "Can turn up the energy when needed",
+        "PA system included",
+        "Custom setlist from full repertoire"
+      ],
+      "featured": false
+    }
+  ],
+  "extras": [
+    { "name": "Additional set", "price": "£XXX" },
+    { "name": "Extended travel (50+ miles from Shropshire)", "price": "£XXX" },
+    { "name": "DJ / playlist service between sets", "price": "£XXX" },
+    { "name": "Learn a special request song", "price": "£XXX" }
+  ]
+}

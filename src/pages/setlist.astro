@@ -1,0 +1,170 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/global.css';
+import songs from '../data/setlist.json';
+
+const genres = [...new Set(songs.map(s => s.genre))].sort();
+const decades = [...new Set(songs.map(s => s.decade))].sort();
+---
+
+<Base title="Set List | The Rogues" description="Browse our full repertoire of classic and modern rock covers. Pick your favourites and build your dream setlist.">
+  <section class="page-header">
+    <div class="container">
+      <h1 class="section-title">Our <span class="accent">Set List</span></h1>
+      <p class="section-subtitle" style="margin: 0 auto;">Browse, filter, and pick your favourites. Your event, your soundtrack.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <!-- Filters -->
+      <div class="setlist-filters" id="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <span style="color: var(--border); padding: 0.5rem 0;">|</span>
+        {genres.map(genre => (
+          <button class="filter-btn" data-filter={genre} data-type="genre">{genre}</button>
+        ))}
+        <span style="color: var(--border); padding: 0.5rem 0;">|</span>
+        <button class="filter-btn" data-filter="electric" data-type="config">Electric</button>
+        <button class="filter-btn" data-filter="acoustic" data-type="config">Acoustic</button>
+        <button class="filter-btn" data-filter="both" data-type="config">Both</button>
+      </div>
+
+      <!-- Song count -->
+      <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">
+        <span id="song-count">{songs.length}</span> songs — and counting. Got a request? <a href="/enquire">Ask us</a>.
+      </p>
+
+      <!-- Table -->
+      <div style="overflow-x: auto;">
+        <table class="setlist-table" id="setlist">
+          <thead>
+            <tr>
+              <th>Song</th>
+              <th>Artist</th>
+              <th>Genre</th>
+              <th>Type</th>
+              <th style="text-align: center;">Pick</th>
+            </tr>
+          </thead>
+          <tbody>
+            {songs.sort((a, b) => a.artist.localeCompare(b.artist)).map(song => (
+              <tr data-genre={song.genre} data-type={song.type} data-decade={song.decade}>
+                <td><strong>{song.title}</strong></td>
+                <td class="song-artist">{song.artist}</td>
+                <td><span class="tag" style="font-size: 0.7rem;">{song.genre}</span></td>
+                <td>
+                  <span class:list={['tag', `tag-${song.type}`]}>{song.type}</span>
+                </td>
+                <td style="text-align: center;">
+                  <button
+                    class="wishlist-btn"
+                    data-song={`${song.title} - ${song.artist}`}
+                    aria-label={`Add ${song.title} to wishlist`}
+                    style="background: none; border: 1px solid var(--border); border-radius: 4px; padding: 0.3rem 0.6rem; color: var(--text-muted); cursor: pointer; transition: all 0.2s; font-size: 0.8rem;"
+                  >
+                    + Add
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wishlist Bar -->
+  <div class="wishlist-bar" id="wishlist-bar">
+    <div>
+      <span class="wishlist-count"><span id="wishlist-count">0</span> songs selected</span>
+    </div>
+    <div style="display: flex; gap: 0.75rem; align-items: center;">
+      <button id="wishlist-clear" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Clear</button>
+      <a href="/enquire" id="wishlist-submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Enquire with These Songs</a>
+    </div>
+  </div>
+
+  <script>
+    // Filtering
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const rows = document.querySelectorAll('#setlist tbody tr');
+    const countEl = document.getElementById('song-count');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+        const type = btn.dataset.type;
+        let visible = 0;
+
+        rows.forEach(row => {
+          let show = false;
+          if (filter === 'all') {
+            show = true;
+          } else if (type === 'genre') {
+            show = row.dataset.genre === filter;
+          } else if (type === 'config') {
+            show = row.dataset.type === filter || (filter !== 'both' && row.dataset.type === 'both');
+          }
+
+          row.style.display = show ? '' : 'none';
+          if (show) visible++;
+        });
+
+        if (countEl) countEl.textContent = String(visible);
+      });
+    });
+
+    // Wishlist
+    const wishlist: string[] = [];
+    const bar = document.getElementById('wishlist-bar');
+    const wishCountEl = document.getElementById('wishlist-count');
+    const clearBtn = document.getElementById('wishlist-clear');
+    const submitLink = document.getElementById('wishlist-submit') as HTMLAnchorElement;
+
+    function updateWishlist() {
+      if (wishCountEl) wishCountEl.textContent = String(wishlist.length);
+      bar?.classList.toggle('visible', wishlist.length > 0);
+
+      // Update enquiry link with selected songs
+      if (submitLink) {
+        const songsParam = encodeURIComponent(wishlist.join('\n'));
+        submitLink.href = `/enquire?songs=${songsParam}`;
+      }
+    }
+
+    document.querySelectorAll('.wishlist-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const song = (btn as HTMLElement).dataset.song || '';
+        const idx = wishlist.indexOf(song);
+
+        if (idx > -1) {
+          wishlist.splice(idx, 1);
+          btn.textContent = '+ Add';
+          (btn as HTMLElement).style.borderColor = 'var(--border)';
+          (btn as HTMLElement).style.color = 'var(--text-muted)';
+        } else {
+          wishlist.push(song);
+          btn.textContent = '✓ Added';
+          (btn as HTMLElement).style.borderColor = 'var(--accent)';
+          (btn as HTMLElement).style.color = 'var(--accent-light)';
+        }
+
+        updateWishlist();
+      });
+    });
+
+    clearBtn?.addEventListener('click', () => {
+      wishlist.length = 0;
+      document.querySelectorAll('.wishlist-btn').forEach(btn => {
+        btn.textContent = '+ Add';
+        (btn as HTMLElement).style.borderColor = 'var(--border)';
+        (btn as HTMLElement).style.color = 'var(--text-muted)';
+      });
+      updateWishlist();
+    });
+  </script>
+</Base>

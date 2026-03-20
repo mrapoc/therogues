@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/global.css';
+import pricing from '../data/pricing.json';
+---
+
+<Base title="What We Offer | The Rogues" description="Explore our packages — full band, acoustic duo & trio. See pricing and what's included for your event.">
+  <section class="page-header">
+    <div class="container">
+      <h1 class="section-title">What We <span class="accent">Offer</span></h1>
+      <p class="section-subtitle" style="margin: 0 auto;">From chilled acoustic sessions to full-throttle rock — we've got a setup for every event.</p>
+    </div>
+  </section>
+
+  <!-- PACKAGES -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title" style="text-align: center;">Our <span class="accent">Packages</span></h2>
+      <p class="section-subtitle" style="text-align: center; margin: 0 auto 2.5rem;">Every booking includes PA, setup, and a custom setlist tailored to your event.</p>
+      <div class="pricing-grid">
+        {pricing.packages.map((pkg) => (
+          <div class:list={['pricing-card', { featured: pkg.featured }]}>
+            <h3>{pkg.name}</h3>
+            <div class="price">{pkg.price}</div>
+            <p class="price-note">{pkg.note}</p>
+            <ul>
+              {pkg.features.map((f) => (
+                <li>{f}</li>
+              ))}
+            </ul>
+            <a href="/enquire" class="btn btn-primary" style="width: 100%;">Enquire</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- EXTRAS -->
+  <section class="section" style="background: #141414;">
+    <div class="container">
+      <h2 class="section-title">Optional <span class="accent">Extras</span></h2>
+      <p class="section-subtitle">Add-ons to make your event even better.</p>
+      <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+        {pricing.extras.map((extra) => (
+          <div class="card">
+            <h3 style="font-size: 1.1rem;">{extra.name}</h3>
+            <p style="color: var(--accent-light); font-family: var(--font-heading); font-size: 1.3rem; margin-top: 0.5rem;">{extra.price}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENT TYPES -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Events We <span class="accent">Play</span></h2>
+      <p class="section-subtitle">We've played them all — and we'll make yours the best one yet.</p>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">💒</div>
+          <h3>Weddings</h3>
+          <p>Evening reception, first dance, or an acoustic ceremony set. We'll work with you to get the vibe exactly right.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🍺</div>
+          <h3>Pubs & Bars</h3>
+          <p>Our natural habitat. Whether it's a regular Friday night or a special event, we'll pack the place out.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎉</div>
+          <h3>Private Parties</h3>
+          <p>Birthdays, anniversaries, celebrations of any kind. Your party, your playlist.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏢</div>
+          <h3>Corporate Events</h3>
+          <p>Team socials, awards nights, product launches. Professional entertainment that'll get people talking.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎪</div>
+          <h3>Festivals & Outdoor</h3>
+          <p>Give us a stage and we'll give you a show. We're no strangers to big crowds and bigger sound.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎄</div>
+          <h3>Seasonal Events</h3>
+          <p>Christmas parties, New Year's Eve, summer BBQs — we're available for every season.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="text-align: center; background: #141414;">
+    <div class="container">
+      <h2 class="section-title">Like What You <span class="accent">See</span>?</h2>
+      <p class="section-subtitle" style="margin: 0 auto 2rem;">Tell us about your event and we'll put together a quote.</p>
+      <a href="/enquire" class="btn btn-primary">Get a Quote</a>
+    </div>
+  </section>
+</Base>

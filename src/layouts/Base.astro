@@ -1,0 +1,93 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Shropshire's premier rock covers band. Available for weddings, private hire, pubs & celebrations. Acoustic duo, trio & full band options." } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a href="/" class="nav-logo">
+          <img src="/images/logo.png" alt="The Rogues" class="nav-logo-img" />
+        </a>
+        <button class="nav-toggle" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="/" class:list={[{ active: currentPath === '/' }]}>Home</a></li>
+          <li><a href="/about" class:list={[{ active: currentPath === '/about/' }]}>About</a></li>
+          <li><a href="/what-we-offer" class:list={[{ active: currentPath === '/what-we-offer/' }]}>What We Offer</a></li>
+          <li><a href="/setlist" class:list={[{ active: currentPath === '/setlist/' }]}>Set List</a></li>
+          <li><a href="/gallery" class:list={[{ active: currentPath === '/gallery/' }]}>Gallery</a></li>
+          <li><a href="/enquire" class="btn btn-primary">Enquire Now</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>The Rogues</h3>
+            <p>Shropshire's premier rock covers band.<br />
+            Classic & modern rock, acoustic options available.<br />
+            Face-melting solos guaranteed.</p>
+          </div>
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <a href="/what-we-offer">What We Offer</a><br />
+            <a href="/setlist">Set List</a><br />
+            <a href="/enquire">Book Us</a><br />
+            <a href="/gallery">Gallery</a>
+          </div>
+          <div class="footer-section">
+            <h3>Follow Us</h3>
+            <div class="footer-social">
+              <a href="https://www.facebook.com/ludlowrogues/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; {new Date().getFullYear()} The Rogues. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const toggle = document.querySelector('.nav-toggle');
+      const links = document.querySelector('.nav-links');
+      toggle?.addEventListener('click', () => {
+        links?.classList.toggle('open');
+      });
+      // Close mobile nav on link click
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          links?.classList.remove('open');
+        });
+      });
+    </script>
+  </body>
+</html>
