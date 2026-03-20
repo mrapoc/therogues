@@ -312,7 +312,7 @@ a:hover {
   text-align: center;
   position: relative;
   overflow: hidden;
-  background: url('/images/hero-bg.jpg') 35% center/cover no-repeat;
+  background: url('/images/hero-bg.jpg') 20% center/cover no-repeat;
 }
 
 .hero::before {
@@ -342,6 +342,47 @@ a:hover {
   max-width: clamp(320px, 60vw, 600px);
   height: auto;
   margin-bottom: 1.5rem;
+}
+
+/* Mobile hero: logo visible, title hidden, photo section visible */
+.hero-logo-mobile {
+  display: none;
+  max-width: 280px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.hero-photo-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: auto;
+    padding: calc(80px + 2rem) 0 2.5rem;
+    background: var(--bg-dark) !important;
+  }
+
+  .hero::before,
+  .hero::after {
+    display: none;
+  }
+
+  .hero-logo-mobile {
+    display: none;
+  }
+
+  .hero-photo-mobile {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .hero-photo-mobile img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
 }
 
 .hero-title {
